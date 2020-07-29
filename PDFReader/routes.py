@@ -2,6 +2,7 @@ import os
 import PyPDF2
 import matplotlib.pyplot as plt
 import io
+import gzip
 import urllib, base64
 from wordcloud import WordCloud, STOPWORDS
 import numpy as np
@@ -29,6 +30,8 @@ def Home():
 			pdfFileObj.close()
 			dataset = Pages_Count
 			dataset = dataset.lower()
+			dataset=bytes(dataset, 'utf-8')
+			dataset=gzip.compress(dataset)
 			session['my_var'] = dataset
 			return redirect(url_for('results'))
 	return render_template('home.html',title='PDF Reader-Home',form=form)
@@ -37,6 +40,8 @@ def Home():
 @app.route('/results',methods=['GET','POST'])
 def results():
 	dataset = session.get('my_var', None)
+	dataset = gzip.decompress(dataset)
+	dataset=dataset.decode("utf-8")
 	if dataset:
 		cloud = WordCloud(background_color = "black", max_words = 200, stopwords = set(STOPWORDS))
 		wordclouds=cloud.generate(dataset)
