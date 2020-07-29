@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+<center>
+<div class="container">
+		<h1> PDF Reader</h1>
+	<form method="POST" enctype="multipart/form-data">
+	{{ form.hidden_tag() }}
+	<fieldset class="form-group">
+		<div class="form-group" style="padding-top: 200px;">
+			<p>{{ form.PDF.label(class="form-control-label") }}</p>
+			{% if form.PDF.errors %}
+				{% for error in form.PDF.errors %}
+					<span class="text-danger">{{error}}</span><br>
+				{% endfor %}
+			{% endif %}
+			<p>{{ form.PDF }}</p>
+		</div>
+		<div class="form-group">
+			{{ form.Submit(class="btn btn-outline-dark btn-lg") }}
+		</div>
+	</fieldset>
+	</form>
+</div>
+</center>
+
+{% endblock content %}
+
+
+
